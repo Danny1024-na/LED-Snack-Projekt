@@ -6,11 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
 import ledControl.BoardController;
+import ledControl.gui.KeyBuffer;
 
 public class EineWeitereKlasse{
 	
 	
 	private BoardController controller;
+	private static KeyBuffer buffer;
 	private List<Points> pointList=new ArrayList<>();
 	
 	private static int levelnumber=1;
@@ -48,11 +50,12 @@ public class EineWeitereKlasse{
 			pointList.add(new Points(1,1,new int[] {110,0,0}));
 			controller.addColor(pointList.get(1).getXPosition(),pointList.get(1).getYPosition(),pointList.get(1).getColor());
 			
-			keyPressed();
+			
 			
 			controller.updateBoard();
 			while(true)
 			{
+				keyPressed();
 				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
@@ -183,40 +186,62 @@ public class EineWeitereKlasse{
 		//to know if a key pressed
 		private void keyPressed() 
 		{
-			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-					 new KeyEventDispatcher() 
-					 {
-
-						 @Override
-						 public boolean dispatchKeyEvent(KeyEvent e) {
-								left = right = up = down = false;
-								System.out.println("all :"+left + right + up + down);
-							 // TODO Auto-generated method stub
-							 switch (e.getKeyCode())
-							 {
-							 case 37: //left 
-								 left = true;
-								 System.out.println("left "+left);
-								 break;
-							 case 38: //up
-								 up =true;
-								 System.out.println("up "+up);
-								 break;
-							 case 39: //right
-								 right =true;
-								 System.out.println("right "+right);
-								 break;
-							 case 40: //down
-								 down = true;
-								 System.out.println("down "+down);
-								 break;
-							 default:
-								 break;
-							 }
-							 return false;
-						 }
-					 }
-					);
+//			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
+//					 new KeyEventDispatcher() 
+//					 {
+//
+//						 @Override
+//						 public boolean dispatchKeyEvent(KeyEvent e) {
+//								left = right = up = down = false;
+//								System.out.println("all :"+left + right + up + down);
+//							 // TODO Auto-generated method stub
+//							 switch (e.getKeyCode())
+//							 {
+//							 case 37: //left 
+//								 left = true;
+//								 System.out.println("left "+left);
+//								 break;
+//							 case 38: //up
+//								 up =true;
+//								 System.out.println("up "+up);
+//								 break;
+//							 case 39: //right
+//								 right =true;
+//								 System.out.println("right "+right);
+//								 break;
+//							 case 40: //down
+//								 down = true;
+//								 System.out.println("down "+down);
+//								 break;
+//							 default:
+//								 break;
+//							 }
+//							 return false;
+//						 }
+//					 }
+//					);
+			buffer = controller.getKeyBuffer();
+			KeyEvent event = buffer.pop();
+			if (event != null){
+				if (event.getID() == java.awt.event.KeyEvent.KEY_PRESSED){
+					left = right = up = down = false;
+					switch (event.getKeyCode()){
+					case java.awt.event.KeyEvent.VK_UP:
+						up =true;
+						break;
+					case java.awt.event.KeyEvent.VK_DOWN:
+						down =true;
+						break;
+					case java.awt.event.KeyEvent.VK_LEFT:
+						left =true;
+						break;
+					case java.awt.event.KeyEvent.VK_RIGHT:
+						right =true;
+						break;
+					default:
+					}
+				}
+			}
 		}
 		
 }
