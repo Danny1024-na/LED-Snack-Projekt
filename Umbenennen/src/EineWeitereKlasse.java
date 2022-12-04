@@ -59,15 +59,27 @@ public class EineWeitereKlasse{
 				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
-				automatischeBewegungsfunktion();
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getXPosition()==essenYPosition)
 				{
 					Schlangeverlängern();
 					EssenAufploppen();
 				}
-				//der Level ist geschaft
-				if(schlangeGrosse==10)
+				
+				if(pointList.get(0).getXPosition()<20 && pointList.get(0).getYPosition()<20)
+				{
+					automatischeBewegungsfunktion();
+				}
+				else if(schlangeGrosse==10)   //der Level ist geschafft
+				{
+					EndedesSpieles();
 					break;
+				}
+				else                          //verloren
+				{
+					EndedesSpieles();
+					break;
+				}
+				
 				controller.updateBoard();
 			}
 
@@ -94,6 +106,7 @@ public class EineWeitereKlasse{
 		}
 		
 		//Danny
+		//von links nach rechts ist als Default der Bewegung
 		private void automatischeBewegungsfunktion()
 		{
 			//speichern der letzen Position von letzem Punkt ,bevor die Schlange sich bewegt
@@ -103,34 +116,28 @@ public class EineWeitereKlasse{
 			//reset die farben 
 
 			controller.resetColors();
-			
-			//von links nach rechts ist als Default der Bewegung
-			if(pointList.get(0).getXPosition()<20 && pointList.get(0).getYPosition()<20)
+			//änderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleiene behandelt
+			positionAendern();
+			//Handlugs von 0 Position
+			if(right)
 			{
-				//änderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleiene behandelt
-				positionAendern();
-				//Handlugs von 0 Position
-				if(right)
-				{
-					pointList.get(0).SetXPosition(pointList.get(0).getXPosition()+1);
-				}
-				if(left)
-				{
-					pointList.get(0).SetXPosition(pointList.get(0).getXPosition()-1);
-				}
-				if(up)
-				{
-					pointList.get(0).SetYPosition(pointList.get(0).getYPosition()-1);
-				}
-				if(down)
-				{
-					pointList.get(0).SetYPosition(pointList.get(0).getYPosition()+1);
-				}
-				
-				newPositionenZeichnen();
+				pointList.get(0).SetXPosition(pointList.get(0).getXPosition()+1);
 			}
-			else
-				EndedesSpieles();
+			if(left)
+			{
+				pointList.get(0).SetXPosition(pointList.get(0).getXPosition()-1);
+			}
+			if(up)
+			{
+				pointList.get(0).SetYPosition(pointList.get(0).getYPosition()-1);
+			}
+			if(down)
+			{
+				pointList.get(0).SetYPosition(pointList.get(0).getYPosition()+1);
+			}
+			
+			newPositionenZeichnen();
+			
 		}
 		
 		private void newPositionenZeichnen()
@@ -186,40 +193,6 @@ public class EineWeitereKlasse{
 		//to know if a key pressed
 		private void keyPressed() 
 		{
-//			KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(
-//					 new KeyEventDispatcher() 
-//					 {
-//
-//						 @Override
-//						 public boolean dispatchKeyEvent(KeyEvent e) {
-//								left = right = up = down = false;
-//								System.out.println("all :"+left + right + up + down);
-//							 // TODO Auto-generated method stub
-//							 switch (e.getKeyCode())
-//							 {
-//							 case 37: //left 
-//								 left = true;
-//								 System.out.println("left "+left);
-//								 break;
-//							 case 38: //up
-//								 up =true;
-//								 System.out.println("up "+up);
-//								 break;
-//							 case 39: //right
-//								 right =true;
-//								 System.out.println("right "+right);
-//								 break;
-//							 case 40: //down
-//								 down = true;
-//								 System.out.println("down "+down);
-//								 break;
-//							 default:
-//								 break;
-//							 }
-//							 return false;
-//						 }
-//					 }
-//					);
 			buffer = controller.getKeyBuffer();
 			KeyEvent event = buffer.pop();
 			if (event != null){
