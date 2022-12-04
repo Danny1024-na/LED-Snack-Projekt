@@ -20,8 +20,8 @@ public class EineWeitereKlasse{
 	
 	private int schlangeGrosse=2; //der Kopf und noch ein Stück
 	
-	private int essenXPosition;
-	private int essenYPosition;
+	private static int essenXPosition;
+	private static int essenYPosition;
 	
 	private int XPositionVonletzenStück; // wird jedes mal an Automatischbewegungsfunktion definiert werden
 	private int YPositionVonletzenStück;
@@ -51,18 +51,20 @@ public class EineWeitereKlasse{
 			controller.addColor(pointList.get(1).getXPosition(),pointList.get(1).getYPosition(),pointList.get(1).getColor());
 			
 			
-			
 			controller.updateBoard();
 			while(true)
 			{
+
 				keyPressed();
 				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
-				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getXPosition()==essenYPosition)
+				System.out.println("x "+pointList.get(0).getXPosition());
+				System.out.println("y "+pointList.get(0).getYPosition());
+				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
 					Schlangeverlängern();
-					EssenAufploppen();
+					System.out.println("heeey");
 				}
 				
 				if(pointList.get(0).getXPosition()<20 && pointList.get(0).getYPosition()<20)
@@ -146,6 +148,9 @@ public class EineWeitereKlasse{
 			{
 				controller.addColor(pointList.get(i).getXPosition(),pointList.get(i).getYPosition(),pointList.get(i).getColor());
 			}
+			
+			//hier muss das Essen gezeichnet werden
+			EssenAufploppen();
 		}
 		
 		
@@ -157,7 +162,7 @@ public class EineWeitereKlasse{
 				pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
 			}
 			//Geschwindigkeit 
-			controller.sleep(200);
+			controller.sleep(300);
 		}
 		
 		//Bord muss Weiß umgeben 
