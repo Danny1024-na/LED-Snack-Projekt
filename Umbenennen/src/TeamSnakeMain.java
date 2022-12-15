@@ -1,7 +1,5 @@
-import java.awt.event.KeyEvent;
 import ledControl.BoardController;
 import ledControl.LedConfiguration;
-import ledControl.gui.KeyBuffer;
 
 public class TeamSnakeMain {
 
@@ -12,6 +10,5 @@ public class TeamSnakeMain {
 		
 		//Das Objekt in der anderen Klasse wird erstellt
 		EineWeitereKlasse ewk = new EineWeitereKlasse(controller);
-		
 	}
 }

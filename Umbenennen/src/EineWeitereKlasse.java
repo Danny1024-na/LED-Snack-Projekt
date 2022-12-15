@@ -1,10 +1,7 @@
-import java.awt.KeyEventDispatcher;
-import java.awt.KeyboardFocusManager;
+
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.List;
-import javax.swing.JFrame;
 import ledControl.BoardController;
 import ledControl.gui.KeyBuffer;
 
@@ -16,7 +13,6 @@ public class EineWeitereKlasse{
 	private List<Points> pointList=new ArrayList<>();
 	
 	private static int levelnumber=1;
-	private static int punkteZahl=0;
 	
 	private int schlangeGrosse=2; //der Kopf und noch ein Stück
 	
@@ -47,31 +43,27 @@ public class EineWeitereKlasse{
 			//Der Kopf hat die Nummer 0 , die nächste Stück hat 1 ,usw...
 			pointList.add(new Points(2,1,new int[] {120,0,0}));
 			controller.addColor(pointList.get(0).getXPosition(),pointList.get(0).getYPosition(),pointList.get(0).getColor());
-			pointList.add(new Points(1,1,new int[] {110,0,0}));
+			pointList.add(new Points(1,1,new int[] {115,0,0}));
 			controller.addColor(pointList.get(1).getXPosition(),pointList.get(1).getYPosition(),pointList.get(1).getColor());
 			
 			
 			controller.updateBoard();
 			while(true)
 			{
-
 				keyPressed();
 				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
-				System.out.println("x "+pointList.get(0).getXPosition());
-				System.out.println("y "+pointList.get(0).getYPosition());
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
 					Schlangeverlängern();
-					System.out.println("heeey");
 				}
 				
-				if(pointList.get(0).getXPosition()<20 && pointList.get(0).getYPosition()<20)
+				if(pointList.get(0).getXPosition()<19 && pointList.get(0).getYPosition()<19 && pointList.get(0).getYPosition()>0 && pointList.get(0).getXPosition()>0 )
 				{
 					automatischeBewegungsfunktion();
 				}
-				else if(schlangeGrosse==10)   //der Level ist geschafft
+				else if(schlangeGrosse==12)   //der Level ist geschafft
 				{
 					EndedesSpieles();
 					break;
@@ -87,24 +79,10 @@ public class EineWeitereKlasse{
 
 		}
 		
-		
-		//der Anzahl von Snack gefrressenen Punkte 
-		private void punkteZahl()
-		{
-			punkteZahl++;
-		}
-		
-		//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl von Punkte erreicht
+		//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
 		private void levelCheek()
 		{
 			levelnumber++;
-		}
-		
-		//Danny
-		//bewegung (nur nach rechts und links)
-		private void bewegungsfunktion()
-		{
-			
 		}
 		
 		//Danny
@@ -115,9 +93,10 @@ public class EineWeitereKlasse{
 			XPositionVonletzenStück=pointList.get(pointList.size()-1).getXPosition();
 			YPositionVonletzenStück=pointList.get(pointList.size()-1).getYPosition();
 			
-			//reset die farben 
-
-			controller.resetColors();
+			//reset alle Farben ausßer die Fareb des Bords
+			for(int i=1;i<19;i++)
+				for(int j=1;j<19;j++)
+					controller.setColor(i, j, new int[] {0,0,0});
 			//änderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleiene behandelt
 			positionAendern();
 			//Handlugs von 0 Position
@@ -162,13 +141,24 @@ public class EineWeitereKlasse{
 				pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
 			}
 			//Geschwindigkeit 
-			controller.sleep(300);
+			//die Geschwindigkeit wird erhöht wenn der level geschafft ist (50 Millisekunden) jedes mal 
+			controller.sleep(700-(levelnumber*50));
 		}
 		
 		//Bord muss Weiß umgeben 
 		private void BordZeichnen()
 		{
+			for( int i = 0; i < 20; i++) {
+				controller.setColor(i, 0, 127, 127, 127);
+				controller.setColor(i, 19, 127, 127, 127);
+				controller.updateBoard();
+			}
 			
+			for( int i = 0; i < 20; i++) { // +1 da sonst das Bord nicht komplett gezeichnet wied
+				controller.setColor(0, i, 127, 127, 127);
+				controller.setColor(19, i, 127, 127, 127);
+				controller.updateBoard();
+			}
 		}
 		
 		
@@ -181,7 +171,6 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
-			
 		}
 		
 		//Danny
@@ -189,9 +178,10 @@ public class EineWeitereKlasse{
 		private void Schlangeverlängern()
 		{
 			//füg der neue Punkt an die gleiche Position von dem letzen Punkt hinzu ,denn der letzen alten Punkt ist schon bewegt werden
-			pointList.add(new Points(XPositionVonletzenStück,YPositionVonletzenStück,new int[] {120,0,0}));
+			// {120 -(this.schlangeGrosse*5) beschreibt wie Gross muss jede neue Stück sein muss : je mehr sie weit von Kopf ist,desto kleiner Kreisradius hat
+			pointList.add(new Points(XPositionVonletzenStück,YPositionVonletzenStück,new int[] {120-(this.schlangeGrosse*5),0,0}));
 			controller.addColor(XPositionVonletzenStück,YPositionVonletzenStück,pointList.get(pointList.size()-1).getColor());
-			schlangeGrosse++; //wenn 10 -> level geschafft
+			schlangeGrosse++; //wenn 12 -> level geschafft
 		}
 		
 
@@ -202,24 +192,36 @@ public class EineWeitereKlasse{
 			KeyEvent event = buffer.pop();
 			if (event != null){
 				if (event.getID() == java.awt.event.KeyEvent.KEY_PRESSED){
-					left = right = up = down = false;
 					switch (event.getKeyCode()){
 					case java.awt.event.KeyEvent.VK_UP:
+						if(down) //Darf keine Gegenrichtung ausgeführt werden
+							break;
+						left = right = down =false;
 						up =true;
 						break;
 					case java.awt.event.KeyEvent.VK_DOWN:
+						if(up)
+							break;
+						up = left = right =false;
 						down =true;
 						break;
 					case java.awt.event.KeyEvent.VK_LEFT:
+						if(right)
+							break;
+						right = up = down =false;
 						left =true;
 						break;
 					case java.awt.event.KeyEvent.VK_RIGHT:
+						if(left)
+							break;
+						up = down =left =false;
 						right =true;
 						break;
 					default:
 					}
 				}
 			}
+			buffer.clear(); // Lösch alle (Buffered) Anweisungen  : Im Fall ein Key mehrmals gedrückt ist 
 		}
 		
 }
