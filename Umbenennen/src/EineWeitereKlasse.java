@@ -85,6 +85,20 @@ public class EineWeitereKlasse{
 			levelnumber++;
 		}
 		
+
+		
+		//game over : Kopf mit weißer Wand oder mit sich selbst kollidiert 
+		private void EndedesSpieles()
+		{
+			
+		}
+		
+		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
+		private void EssenAufploppen()
+		{
+		}
+		
+		
 		//Danny
 		//von links nach rechts ist als Default der Bewegung
 		private void automatischeBewegungsfunktion()
@@ -93,7 +107,7 @@ public class EineWeitereKlasse{
 			XPositionVonletzenStück=pointList.get(pointList.size()-1).getXPosition();
 			YPositionVonletzenStück=pointList.get(pointList.size()-1).getYPosition();
 			
-			//reset alle Farben ausßer die Fareb des Bords
+			//reset alle Farben ausßer die Farbe des Bords
 			for(int i=1;i<19;i++)
 				for(int j=1;j<19;j++)
 					controller.setColor(i, j, new int[] {0,0,0});
@@ -154,26 +168,13 @@ public class EineWeitereKlasse{
 				controller.updateBoard();
 			}
 			
-			for( int i = 0; i < 20; i++) { // +1 da sonst das Bord nicht komplett gezeichnet wied
+			for( int i = 0; i < 20; i++) {
 				controller.setColor(0, i, 127, 127, 127);
 				controller.setColor(19, i, 127, 127, 127);
 				controller.updateBoard();
 			}
 		}
 		
-		
-		//game over : Kopf mit weißer Wand oder mit sich selbst kollidiert 
-		private void EndedesSpieles()
-		{
-			
-		}
-		
-		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
-		private void EssenAufploppen()
-		{
-		}
-		
-		//Danny
 		//sobald die Schlange etwas isst ,muss sie länger sein werden
 		private void Schlangeverlängern()
 		{
