@@ -1,4 +1,3 @@
-
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,10 +26,6 @@ public class EineWeitereKlasse{
 	private boolean right=true;
 	private boolean up=false;
 	private boolean down=false;
-	
-	
-	private final int x[] = new int[400];
-    private final int y[] = new int[400];
 	
 	
 
@@ -68,16 +63,17 @@ public class EineWeitereKlasse{
 				{
 					automatischeBewegungsfunktion();
 				}
+				else                       //verloren
+				{
+					EndedesSpieles();
+					break;
+				}
+				
 				//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
-				else if(schlangeGrosse==12)
+				if(schlangeGrosse==12)
 				{
 					levelnumber++;
 					naechsterlevel();
-					break;
-				}
-				else                          //verloren
-				{
-					EndedesSpieles();
 					break;
 				}
 				
@@ -102,8 +98,19 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
-			essenXPosition = (int) (Math.random() * 18);
-			essenYPosition = (int) (Math.random() * 18);
+			boolean x=false;
+			while(x)
+			{
+				essenXPosition = (int) ((Math.random()*18 )+1);
+				essenYPosition = (int) ((Math.random()*18 )+1);
+				//damit das Essen nicht auf die gleiche Positionen, die zu der Schlange gehören , gezeichnet
+				x=false;
+				for(int i=1;i<19;i++)
+					if(essenXPosition==pointList.get(i).getXPosition() && essenYPosition==pointList.get(i).getYPosition())
+					{
+						x=true;
+					}
+			}
 			controller.addColor(essenXPosition, essenYPosition, new int[] {127,127,127});
 		 }
 

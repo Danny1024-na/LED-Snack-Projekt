@@ -10,5 +10,6 @@ public class TeamSnakeMain {
 		
 		//Das Objekt in der anderen Klasse wird erstellt
 		EineWeitereKlasse ewk = new EineWeitereKlasse(controller);
+		
 	}
 }
