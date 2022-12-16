@@ -1,6 +1,7 @@
 
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import ledControl.BoardController;
 import ledControl.gui.KeyBuffer;
@@ -46,7 +47,7 @@ public class EineWeitereKlasse{
 			controller.addColor(pointList.get(0).getXPosition(),pointList.get(0).getYPosition(),pointList.get(0).getColor());
 			pointList.add(new Points(1,1,new int[] {115,0,0}));
 			controller.addColor(pointList.get(1).getXPosition(),pointList.get(1).getYPosition(),pointList.get(1).getColor());
-
+			EssenAufploppen();
 			
 			controller.updateBoard();
 			while(true)
@@ -57,6 +58,7 @@ public class EineWeitereKlasse{
 				**/
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
+					controller.setColor(essenXPosition, essenYPosition, new int[] {0,0,0});
 					Schlangeverl‰ngern();
 					//hier muss das Essen gezeichnet werden
 					EssenAufploppen();
@@ -70,7 +72,7 @@ public class EineWeitereKlasse{
 				else if(schlangeGrosse==12)
 				{
 					levelnumber++;
-					EndedesSpieles();
+					naechsterlevel();
 					break;
 				}
 				else                          //verloren
@@ -84,6 +86,11 @@ public class EineWeitereKlasse{
 
 		}
 		
+		
+		public void naechsterlevel()
+		{
+			
+		}
 
 		
 		//game over : Kopf mit weiﬂer Wand oder mit sich selbst kollidiert 
@@ -95,9 +102,9 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gef‰rbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
-			essenXPosition = (int) (Math.random() * 20);
-			essenYPosition = (int) (Math.random() * 20);
-			controller.addColor(essenXPosition, essenYPosition, new int[] {120,120,120});
+			essenXPosition = (int) (Math.random() * 18);
+			essenYPosition = (int) (Math.random() * 18);
+			controller.addColor(essenXPosition, essenYPosition, new int[] {127,127,127});
 		 }
 
 		//reset alle Farben ausﬂer die Farbe des Bords
@@ -105,7 +112,8 @@ public class EineWeitereKlasse{
 		{
 			for(int i=1;i<19;i++)
 				for(int j=1;j<19;j++)
-					controller.setColor(i, j, new int[] {0,0,0});
+					if(!Arrays.equals(controller.getColorAt(i, j), new int[] {127,127,127}))
+						controller.setColor(i, j, new int[] {0,0,0});
 		}
 		
 		//Danny
@@ -156,8 +164,12 @@ public class EineWeitereKlasse{
 				pointList.get(i).SetXPosition(pointList.get(i-1).getXPosition());
 				pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
 			}
-			//Geschwindigkeit 
-			//die Geschwindigkeit wird erhˆht wenn der level geschafft ist (50 Millisekunden) jedes mal 
+			Geschwindigkeit();
+		}
+
+		//die Geschwindigkeit wird erhˆht wenn der level geschafft ist (50 Millisekunden) jedes mal 
+		private void Geschwindigkeit()
+		{
 			controller.sleep(700-(levelnumber*50));
 		}
 		
