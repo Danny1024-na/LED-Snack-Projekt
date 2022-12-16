@@ -22,18 +22,14 @@ public class EineWeitereKlasse{
 	private int XPositionVonletzenStück; // wird jedes mal an Automatischbewegungsfunktion definiert werden
 	private int YPositionVonletzenStück;
 	
-	private int XPositionVonerstenStück;
-	private int YPositionVonerstenStück;
-	
 	private boolean left=false;
 	private boolean right=true;
 	private boolean up=false;
 	private boolean down=false;
 	
-	private final int dotSize = 10;
-	private final int allDots=400;
-	private final int x[] = new int[allDots];
-    private final int y[] = new int[allDots];
+	
+	private final int x[] = new int[400];
+    private final int y[] = new int[400];
 	
 	
 
@@ -68,10 +64,11 @@ public class EineWeitereKlasse{
 				{
 					automatischeBewegungsfunktion();
 				}
-				else if(schlangeGrosse==12)   //der Level ist geschafft
+				//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
+				else if(schlangeGrosse==12)
 				{
+					levelnumber++;
 					EndedesSpieles();
-					break;
 				}
 				else                          //verloren
 				{
@@ -82,12 +79,6 @@ public class EineWeitereKlasse{
 				controller.updateBoard();
 			}
 
-		}
-		
-		//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
-		private void levelCheek()
-		{
-			levelnumber++;
 		}
 		
 
@@ -101,19 +92,9 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
-			int r = (int) (Math.random() * 20);
-			essenXPosition = ((r * dotSize));
-			essenYPosition = ((r * dotSize));
-			
+			essenXPosition = (int) (Math.random() * 20);
+			essenYPosition = (int) (Math.random() * 20);
 		 }
-		
-		private void punkteZahl()
-		{
-			 if ((x[0] == appleX) && (y[0] == appleY)) 
-			 {
-		            punkteZahl++;
-			 }
-		}
 		
 		
 		//Danny
