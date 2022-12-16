@@ -30,6 +30,11 @@ public class EineWeitereKlasse{
 	private boolean up=false;
 	private boolean down=false;
 	
+	private final int dotSize = 10;
+	private final int allDots=400;
+	private final int x[] = new int[allDots];
+    private final int y[] = new int[allDots];
+	
 	
 
 	//Konstruktor
@@ -96,6 +101,18 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
+			int r = (int) (Math.random() * 20);
+			essenXPosition = ((r * dotSize));
+			essenYPosition = ((r * dotSize));
+			
+		 }
+		
+		private void punkteZahl()
+		{
+			 if ((x[0] == appleX) && (y[0] == appleY)) 
+			 {
+		            punkteZahl++;
+			 }
 		}
 		
 		
