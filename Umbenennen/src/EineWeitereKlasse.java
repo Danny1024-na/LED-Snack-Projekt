@@ -98,14 +98,15 @@ public class EineWeitereKlasse{
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
 		private void EssenAufploppen()
 		{
-			boolean x=false;
+			boolean x=true;
 			while(x)
 			{
-				essenXPosition = (int) ((Math.random()*18 )+1);
-				essenYPosition = (int) ((Math.random()*18 )+1);
+				//random * (max (18)- min (1)) +1
+				essenXPosition = (int) ((Math.random()*17 )+1);
+				essenYPosition = (int) ((Math.random()*17 )+1);
 				//damit das Essen nicht auf die gleiche Positionen, die zu der Schlange gehören , gezeichnet
 				x=false;
-				for(int i=1;i<19;i++)
+				for(int i=0;i<pointList.size();i++)
 					if(essenXPosition==pointList.get(i).getXPosition() && essenYPosition==pointList.get(i).getYPosition())
 					{
 						x=true;
@@ -171,13 +172,13 @@ public class EineWeitereKlasse{
 				pointList.get(i).SetXPosition(pointList.get(i-1).getXPosition());
 				pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
 			}
-			Geschwindigkeit();
+			geschwindigkeit();
 		}
 
-		//die Geschwindigkeit wird erhöht wenn der level geschafft ist (50 Millisekunden) jedes mal 
-		private void Geschwindigkeit()
+		//die Geschwindigkeit wird erhöht wenn der level geschafft ist (30 Millisekunden) jedes mal 
+		private void geschwindigkeit()
 		{
-			controller.sleep(700-(levelnumber*50));
+			controller.sleep(500-(levelnumber*30));
 		}
 		
 		//Bord muss Weiß umgeben 
