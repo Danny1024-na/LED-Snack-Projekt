@@ -46,7 +46,7 @@ public class EineWeitereKlasse{
 			controller.addColor(pointList.get(0).getXPosition(),pointList.get(0).getYPosition(),pointList.get(0).getColor());
 			pointList.add(new Points(1,1,new int[] {115,0,0}));
 			controller.addColor(pointList.get(1).getXPosition(),pointList.get(1).getYPosition(),pointList.get(1).getColor());
-			
+
 			
 			controller.updateBoard();
 			while(true)
@@ -58,6 +58,8 @@ public class EineWeitereKlasse{
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
 					Schlangeverl‰ngern();
+					//hier muss das Essen gezeichnet werden
+					EssenAufploppen();
 				}
 				
 				if(pointList.get(0).getXPosition()<19 && pointList.get(0).getYPosition()<19 && pointList.get(0).getYPosition()>0 && pointList.get(0).getXPosition()>0 )
@@ -69,6 +71,7 @@ public class EineWeitereKlasse{
 				{
 					levelnumber++;
 					EndedesSpieles();
+					break;
 				}
 				else                          //verloren
 				{
@@ -94,8 +97,16 @@ public class EineWeitereKlasse{
 		{
 			essenXPosition = (int) (Math.random() * 20);
 			essenYPosition = (int) (Math.random() * 20);
+			controller.addColor(essenXPosition, essenYPosition, new int[] {120,120,120});
 		 }
-		
+
+		//reset alle Farben ausﬂer die Farbe des Bords
+		private void Farbenreset()
+		{
+			for(int i=1;i<19;i++)
+				for(int j=1;j<19;j++)
+					controller.setColor(i, j, new int[] {0,0,0});
+		}
 		
 		//Danny
 		//von links nach rechts ist als Default der Bewegung
@@ -105,11 +116,7 @@ public class EineWeitereKlasse{
 			XPositionVonletzenSt¸ck=pointList.get(pointList.size()-1).getXPosition();
 			YPositionVonletzenSt¸ck=pointList.get(pointList.size()-1).getYPosition();
 			
-			//reset alle Farben ausﬂer die Farbe des Bords
-			for(int i=1;i<19;i++)
-				for(int j=1;j<19;j++)
-					controller.setColor(i, j, new int[] {0,0,0});
-			//‰nderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleiene behandelt
+			Farbenreset();
 			positionAendern();
 			//Handlugs von 0 Position
 			if(right)
@@ -139,12 +146,9 @@ public class EineWeitereKlasse{
 			{
 				controller.addColor(pointList.get(i).getXPosition(),pointList.get(i).getYPosition(),pointList.get(i).getColor());
 			}
-			
-			//hier muss das Essen gezeichnet werden
-			EssenAufploppen();
 		}
 		
-		
+		//‰nderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleine behandelt
 		private void positionAendern()
 		{
 			for (int i=pointList.size()-1;i>0;i--)
