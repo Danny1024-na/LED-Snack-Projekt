@@ -110,9 +110,9 @@ public class EineWeitereKlasse{
 				//Überprüfung ob der Kopf mit anderem Körperteil kllidiert 
 				if(pointList.get(0).getXPosition()==pointList.get(i).getXPosition() && pointList.get(0).getYPosition()==pointList.get(i).getYPosition())
 				{
-					//wird die SchalngeGrosse verringert und alle nach i Punkte von pointList gelöscht
-					this.schlangeGrosse=i;
-					for(int j=pointList.size()-1;j>=i;j--) //muss absteigend sein , denn size der poitList wird sich jedes mal um 1 verringert
+					//wird die SchalngeGrosse zu (i-1) verringert und alle die nach i-1 Punkte von pointList gelöscht
+					this.schlangeGrosse=i-1;
+					for(int j=pointList.size()-1;j>=i-1;j--) //muss absteigend sein , denn size der poitList wird sich jedes mal um 1 verringert
 						pointList.remove(j);
 				}
 			}
