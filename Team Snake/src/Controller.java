@@ -10,7 +10,7 @@ import ledControl.BoardController;
 import ledControl.LedConfiguration;
 import ledControl.gui.KeyBuffer;
 
-public class EineWeitereKlasse{
+public class Controller{
 	
 	
 	private BoardController controller;
@@ -40,7 +40,7 @@ public class EineWeitereKlasse{
 	
 
 	//Konstruktor
-		public EineWeitereKlasse(BoardController controller,int levelNumber) {
+		public Controller(BoardController controller,int levelNumber) {
 			this.controller = controller;
 			this.levelNumber=levelNumber;
 			this.essenColor1=(int)(127/this.levelNumber);
@@ -133,7 +133,7 @@ public class EineWeitereKlasse{
 			if(dialogeResult==JOptionPane.YES_OPTION)
 			{
 				controller.resetColors();
-				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,1);
+				Controller ewk2 = new Controller(this.controller,1);
 			}
 		}
 		
@@ -151,7 +151,7 @@ public class EineWeitereKlasse{
 			if(dialogeResult==JOptionPane.YES_OPTION)
 			{
 				controller.resetColors();
-				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,++this.levelNumber);
+				Controller ewk2 = new Controller(this.controller,++this.levelNumber);
 			}
 		}
 
@@ -171,7 +171,7 @@ public class EineWeitereKlasse{
 			{
 				controller.resetColors();
 				//BoardController controller = BoardController.getBoardController(LedConfiguration.LED_20x20_EMULATOR);
-				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,1);
+				Controller ewk2 = new Controller(this.controller,1);
 			}
 		}
 		

@@ -9,7 +9,7 @@ public class TeamSnakeMain {
 		BoardController controller = BoardController.getBoardController(LedConfiguration.LED_20x20_EMULATOR);
 		
 		//Das Objekt in der anderen Klasse wird erstellt
-		EineWeitereKlasse ewk = new EineWeitereKlasse(controller,1);
+		Controller ewk = new Controller(controller,1);
 		
 	}
 }
