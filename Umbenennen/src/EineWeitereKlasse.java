@@ -32,13 +32,20 @@ public class EineWeitereKlasse{
 	private boolean up=false;
 	private boolean down=false;
 	
+	//das Essen bei jedem Level hat einige Farbe
+	private int essenColor1;
+	private int essenColor2;
+	private int essenColor3;
+	
 	
 
 	//Konstruktor
 		public EineWeitereKlasse(BoardController controller,int levelNumber) {
 			this.controller = controller;
 			this.levelNumber=levelNumber;
-			System.out.println(this.levelNumber);
+			this.essenColor1=(int)(127/this.levelNumber);
+			this.essenColor2 =(127-this.levelNumber*5);
+			this.essenColor3 =(127-this.levelNumber*3);
 			BordZeichnen();
 			
 			//start der Schlange Oben Links
@@ -167,15 +174,15 @@ public class EineWeitereKlasse{
 						x=true;
 					}
 			}
-			controller.addColor(essenXPosition, essenYPosition, new int[] {127,127,127});
+			controller.addColor(essenXPosition, essenYPosition, new int[] {this.essenColor1,this.essenColor2,this.essenColor3});
 		 }
 
-		//reset alle Farben ausﬂer die Farbe des Bords und des Essens
+		//reset alle Farben (ausﬂer) die Farbe des Bords und des Essens
 		private void Farbenreset()
 		{
 			for(int i=1;i<19;i++)
 				for(int j=1;j<19;j++)
-					if(!Arrays.equals(controller.getColorAt(i, j), new int[] {127,127,127}))
+					if(!Arrays.equals(controller.getColorAt(i, j), new int[] {this.essenColor1,this.essenColor2,this.essenColor3}))
 						controller.setColor(i, j, new int[] {0,0,0});
 		}
 		
