@@ -65,6 +65,7 @@ public class EineWeitereKlasse{
 				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
+				selbstEssen();
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
 					controller.setColor(essenXPosition, essenYPosition, new int[] {0,0,0});
@@ -98,6 +99,23 @@ public class EineWeitereKlasse{
 				controller.updateBoard();
 			}
 
+		}
+		
+		//wird die Schlange kleiner sein 
+		private void selbstEssen()
+		{
+			
+			for(int i=1;i<pointList.size();i++)
+			{
+				//Überprüfung ob der Kopf mit anderem Körperteil kllidiert 
+				if(pointList.get(0).getXPosition()==pointList.get(i).getXPosition() && pointList.get(0).getYPosition()==pointList.get(i).getYPosition())
+				{
+					//wird die SchalngeGrosse verringert und alle nach i Punkte von pointList gelöscht
+					this.schlangeGrosse=i;
+					for(int j=pointList.size()-1;j>=i;j--) //muss absteigend sein , denn size der poitList wird sich jedes mal um 1 verringert
+						pointList.remove(j);
+				}
+			}
 		}
 		
 		//am Ende des Spieles (10 levels)
@@ -138,7 +156,7 @@ public class EineWeitereKlasse{
 		}
 
 		
-		//game over : Kopf mit weißer Wand oder mit sich selbst kollidiert 
+		//game over : Kopf mit weißer Wand kollidiert 
 		private void EndedesSpieles()
 		{
 			new JOptionPane();
@@ -186,7 +204,6 @@ public class EineWeitereKlasse{
 						controller.setColor(i, j, new int[] {0,0,0});
 		}
 		
-		//Danny
 		//von links nach rechts ist als Default der Bewegung
 		private void automatischeBewegungsfunktion()
 		{
