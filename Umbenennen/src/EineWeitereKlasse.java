@@ -256,8 +256,8 @@ public class EineWeitereKlasse{
 		private void Schlangeverlängern()
 		{
 			//füg der neue Punkt an die gleiche Position von dem letzen Punkt hinzu ,denn der letzen alten Punkt ist schon bewegt werden
-			// {120 -(this.schlangeGrosse*5) beschreibt wie Gross muss jede neue Stück sein muss : je mehr sie weit von Kopf ist,desto kleiner Kreisradius hat
-			pointList.add(new Points(XPositionVonletzenStück,YPositionVonletzenStück,new int[] {120-(this.schlangeGrosse*5),0,0}));
+			// {120 -(this.schlangeGrosse*2) beschreibt wie Gross muss jede neue Stück sein muss : je mehr sie weit von Kopf ist,desto kleiner Kreisradius hat
+			pointList.add(new Points(XPositionVonletzenStück,YPositionVonletzenStück,new int[] {120-(this.schlangeGrosse*2),0,0}));
 			controller.addColor(XPositionVonletzenStück,YPositionVonletzenStück,pointList.get(pointList.size()-1).getColor());
 			schlangeGrosse++; //wenn 12 -> level geschafft
 		}
