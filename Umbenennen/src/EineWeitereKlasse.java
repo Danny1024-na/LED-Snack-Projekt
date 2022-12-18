@@ -2,6 +2,10 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 import ledControl.BoardController;
 import ledControl.gui.KeyBuffer;
 
@@ -12,7 +16,7 @@ public class EineWeitereKlasse{
 	private static KeyBuffer buffer;
 	private List<Points> pointList=new ArrayList<>();
 	
-	private static int levelnumber=1;
+	private static int levelNumber=1;
 	
 	private int schlangeGrosse=2; //der Kopf und noch ein St¸ck
 	
@@ -72,14 +76,24 @@ public class EineWeitereKlasse{
 				//muss "level number" um 1 erhˆhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
 				if(schlangeGrosse==12)
 				{
-					levelnumber++;
+					levelNumber++;
 					naechsterlevel();
 					break;
+				}
+				if(levelNumber>10)
+				{
+					gewinnen();
 				}
 				
 				controller.updateBoard();
 			}
 
+		}
+		
+		//am Ende des Spieles (10 levels)
+		private void gewinnen()
+		{
+			
 		}
 		
 		
@@ -92,7 +106,8 @@ public class EineWeitereKlasse{
 		//game over : Kopf mit weiﬂer Wand oder mit sich selbst kollidiert 
 		private void EndedesSpieles()
 		{
-			
+			new JOptionPane();
+			JOptionPane.showMessageDialog(new JFrame(), "you lost !!!");
 		}
 		
 		//in einer bestimmten Zeit muss das Essen (Ein gef‰rbter Punkt ) aufploppen
@@ -115,7 +130,7 @@ public class EineWeitereKlasse{
 			controller.addColor(essenXPosition, essenYPosition, new int[] {127,127,127});
 		 }
 
-		//reset alle Farben ausﬂer die Farbe des Bords
+		//reset alle Farben ausﬂer die Farbe des Bords und des Essens
 		private void Farbenreset()
 		{
 			for(int i=1;i<19;i++)
@@ -178,7 +193,7 @@ public class EineWeitereKlasse{
 		//die Geschwindigkeit wird erhˆht wenn der level geschafft ist (30 Millisekunden) jedes mal 
 		private void geschwindigkeit()
 		{
-			controller.sleep(500-(levelnumber*30));
+			controller.sleep(500-(levelNumber*30));
 		}
 		
 		//Bord muss Weiﬂ umgeben 
