@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import ledControl.BoardController;
+import ledControl.LedConfiguration;
 import ledControl.gui.KeyBuffer;
 
 public class EineWeitereKlasse{
@@ -16,7 +17,7 @@ public class EineWeitereKlasse{
 	private static KeyBuffer buffer;
 	private List<Points> pointList=new ArrayList<>();
 	
-	private static int levelNumber=1;
+	private int levelNumber;
 	
 	private int schlangeGrosse=2; //der Kopf und noch ein Stück
 	
@@ -34,8 +35,10 @@ public class EineWeitereKlasse{
 	
 
 	//Konstruktor
-		public EineWeitereKlasse(BoardController controller) {
+		public EineWeitereKlasse(BoardController controller,int levelNumber) {
 			this.controller = controller;
+			this.levelNumber=levelNumber;
+			System.out.println(this.levelNumber);
 			BordZeichnen();
 			
 			//start der Schlange Oben Links
@@ -72,17 +75,17 @@ public class EineWeitereKlasse{
 					EndedesSpieles();
 					break;
 				}
-				
-				//muss "level number" um 1 erhöhen, falls der Nutzer eine bestimmte Zahl (10)von Punkte erreicht
-				if(schlangeGrosse==12)
-				{
-					levelNumber++;
-					naechsterlevel();
-					break;
-				}
+
 				if(levelNumber>10)
 				{
 					gewinnen();
+					break;
+				}
+				
+				if(schlangeGrosse==30)
+				{
+					naechsterlevel();
+					break;
 				}
 				
 				controller.updateBoard();
@@ -93,13 +96,38 @@ public class EineWeitereKlasse{
 		//am Ende des Spieles (10 levels)
 		private void gewinnen()
 		{
+			new JOptionPane();
+			int dialogeResult=JOptionPane.showConfirmDialog(null, "You have copmleted all the levels " 
+															+ "Do you want another roud?",
+														"YOU WIN !!! ", JOptionPane.YES_NO_OPTION);
 			
+			if(dialogeResult==JOptionPane.NO_OPTION)
+			{
+				System.exit(0);
+			}
+			if(dialogeResult==JOptionPane.YES_OPTION)
+			{
+				controller.resetColors();
+				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,1);
+			}
 		}
 		
 		
 		public void naechsterlevel()
 		{
+			new JOptionPane();
+			int dialogeResult=JOptionPane.showConfirmDialog(null, "next level?",
+														"YOU WIN !!! ", JOptionPane.YES_NO_OPTION);
 			
+			if(dialogeResult==JOptionPane.NO_OPTION)
+			{
+				System.exit(0);
+			}
+			if(dialogeResult==JOptionPane.YES_OPTION)
+			{
+				controller.resetColors();
+				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,++this.levelNumber);
+			}
 		}
 
 		
@@ -107,7 +135,19 @@ public class EineWeitereKlasse{
 		private void EndedesSpieles()
 		{
 			new JOptionPane();
-			JOptionPane.showMessageDialog(new JFrame(), "you lost !!!");
+			int dialogeResult=JOptionPane.showConfirmDialog(null, "one more round?",
+														"YOU LOST !!! ", JOptionPane.YES_NO_OPTION);
+			
+			if(dialogeResult==JOptionPane.NO_OPTION)
+			{
+				System.exit(0);
+			}
+			if(dialogeResult==JOptionPane.YES_OPTION)
+			{
+				controller.resetColors();
+				//BoardController controller = BoardController.getBoardController(LedConfiguration.LED_20x20_EMULATOR);
+				EineWeitereKlasse ewk2 = new EineWeitereKlasse(this.controller,1);
+			}
 		}
 		
 		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
