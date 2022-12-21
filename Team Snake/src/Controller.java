@@ -2,12 +2,8 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-
 import ledControl.BoardController;
-import ledControl.LedConfiguration;
 import ledControl.gui.KeyBuffer;
 
 public class Controller{
@@ -19,20 +15,20 @@ public class Controller{
 	
 	private int levelNumber;
 	
-	private int schlangeGrosse=2; //der Kopf und noch ein Stück
+	private int schlangeGrosse=2; //der Kopf und noch ein Stueck (zwei Punkte)
 	
 	private static int essenXPosition;
 	private static int essenYPosition;
 	
-	private int XPositionVonletzenStück; // wird jedes mal an Automatischbewegungsfunktion definiert werden
-	private int YPositionVonletzenStück;
+	private int XPositionVonletzenStueck; // wird jedes mal durch die "Automatischbewegungsfunktion" initialisiert
+	private int YPositionVonletzenStueck;
 	
 	private boolean left=false;
 	private boolean right=true;
 	private boolean up=false;
 	private boolean down=false;
 	
-	//das Essen bei jedem Level hat einige Farbe
+	//das Essen hat bei jedem Level eine andere Farbe
 	private int essenColor1;
 	private int essenColor2;
 	private int essenColor3;
@@ -48,10 +44,10 @@ public class Controller{
 			this.essenColor3 =(127-this.levelNumber*3);
 			BordZeichnen();
 			
-			//start der Schlange Oben Links
-			// (0,0),(0,1),(0,2).... ist für die Weiße Grenze bestzt
-			// (0,0),(1,0),(2,0).... ist für die Weiße Grenze bestzt
-			//Der Kopf hat die Nummer 0 , die nächste Stück hat 1 ,usw...
+			//start der Schlange ist Oben Links
+			// (0,0),(0,1),(0,2).... ist für die Weisse Grenze bestzt
+			// (0,0),(1,0),(2,0).... ist für die Weisse Grenze bestzt
+			//Der Kopf hat die Nummer 0 in der Pointliste , das naechste Stueck hat die Nummer 1 ,usw...
 			pointList.add(new Points(2,1,new int[] {120,0,0}));
 			controller.addColor(pointList.get(0).getXPosition(),pointList.get(0).getYPosition(),pointList.get(0).getColor());
 			pointList.add(new Points(1,1,new int[] {115,0,0}));
@@ -62,21 +58,21 @@ public class Controller{
 			while(true)
 			{
 				keyPressed();
-				/**wenn der Kopf der Schlange in gleicher Position mit dem Essen ,
+				/**wenn der Kopf der Schlange auf der gleichen Position mit dem Essen ist ,
 				    wird die Schlange grösser sein und neues Essen Aufploppen.
 				**/
 				selbstEssen();
 				if(pointList.get(0).getXPosition()==essenXPosition && pointList.get(0).getYPosition()==essenYPosition)
 				{
 					controller.setColor(essenXPosition, essenYPosition, new int[] {0,0,0});
-					Schlangeverlängern();
-					//hier muss das Essen gezeichnet werden
+					Schlangeverlaengern();
+					//hier wird das Essen gezeichnet (ein Punkt)
 					EssenAufploppen();
 				}
 				
 				if(pointList.get(0).getXPosition()<19 && pointList.get(0).getYPosition()<19 && pointList.get(0).getYPosition()>0 && pointList.get(0).getXPosition()>0 )
 				{
-					automatischeBewegungsfunktion();
+					automatischeBewegung();
 				}
 				else                       //verloren
 				{
@@ -84,14 +80,12 @@ public class Controller{
 					break;
 				}
 
-				if(levelNumber>10)
-				{
-					gewinnen();
-					break;
-				}
-				
 				if(schlangeGrosse==30)
 				{
+					if(levelNumber==7) {
+						gewinnen();
+						break;
+					}
 					naechsterlevel();
 					break;
 				}
@@ -101,24 +95,24 @@ public class Controller{
 
 		}
 		
-		//wird die Schlange kleiner sein 
+		//die Schlange verkleinert sich, wenn sie gegen sich selbst kollidiert
 		private void selbstEssen()
 		{
 			
 			for(int i=1;i<pointList.size();i++)
 			{
-				//Überprüfung ob der Kopf mit anderem Körperteil kllidiert 
+				//Ueberpruefung ob der Kopf mit einem anderem Koerperteil kollidiert 
 				if(pointList.get(0).getXPosition()==pointList.get(i).getXPosition() && pointList.get(0).getYPosition()==pointList.get(i).getYPosition())
 				{
-					//wird die SchalngeGrosse zu (i-1) verringert und alle die nach i-1 Punkte von pointList gelöscht
+					//wird die "schalngeGrosse" zu (i-1) verringert und alle die nach i-1 Punkte von pointList geloescht
 					this.schlangeGrosse=i-1;
-					for(int j=pointList.size()-1;j>=i-1;j--) //muss absteigend sein , denn size der poitList wird sich jedes mal um 1 verringert
+					for(int j=pointList.size()-1;j>=i-1;j--) //die for-Schleife muss absteigend sein, denn die size der "pointList" verringert sich jedes mal um 1 
 						pointList.remove(j);
 				}
 			}
 		}
 		
-		//am Ende des Spieles (10 levels)
+		//Das Ende des Spieles (7 levels)
 		private void gewinnen()
 		{
 			new JOptionPane();
@@ -156,7 +150,7 @@ public class Controller{
 		}
 
 		
-		//game over : Kopf mit weißer Wand kollidiert 
+		//game over :wenn der Kopf mit der weissen Abgrenzung kollidiert
 		private void EndedesSpieles()
 		{
 			new JOptionPane();
@@ -170,12 +164,12 @@ public class Controller{
 			if(dialogeResult==JOptionPane.YES_OPTION)
 			{
 				controller.resetColors();
-				//BoardController controller = BoardController.getBoardController(LedConfiguration.LED_20x20_EMULATOR);
+				// hier wird abgefragt, ob man einen neuen Versuch starten moechte
 				Controller ewk2 = new Controller(this.controller,1);
 			}
 		}
 		
-		//in einer bestimmten Zeit muss das Essen (Ein gefärbter Punkt ) aufploppen
+		//das Essen (ein gefaerbter Punkt) ploppt in einer bestimmten Zeit auf
 		private void EssenAufploppen()
 		{
 			boolean x=true;
@@ -184,7 +178,7 @@ public class Controller{
 				//random * (max (18)- min (1)) +1
 				essenXPosition = (int) ((Math.random()*17 )+1);
 				essenYPosition = (int) ((Math.random()*17 )+1);
-				//damit das Essen nicht auf die gleiche Positionen, die zu der Schlange gehören , gezeichnet
+				//damit das Essen nicht auf den gleichen Positionen, wie die Positionen von der Schlange, gezeichnet wird
 				x=false;
 				for(int i=0;i<pointList.size();i++)
 					if(essenXPosition==pointList.get(i).getXPosition() && essenYPosition==pointList.get(i).getYPosition())
@@ -195,7 +189,7 @@ public class Controller{
 			controller.addColor(essenXPosition, essenYPosition, new int[] {this.essenColor1,this.essenColor2,this.essenColor3});
 		 }
 
-		//reset alle Farben (ausßer) die Farbe des Bords und des Essens
+		//resettet alle Farben >> ausser << die Farbe des Bords und des Essens
 		private void Farbenreset()
 		{
 			for(int i=1;i<19;i++)
@@ -203,17 +197,29 @@ public class Controller{
 					if(!Arrays.equals(controller.getColorAt(i, j), new int[] {this.essenColor1,this.essenColor2,this.essenColor3}))
 						controller.setColor(i, j, new int[] {0,0,0});
 		}
-		
-		//von links nach rechts ist als Default der Bewegung
-		private void automatischeBewegungsfunktion()
+
+		//aenderen der Position, der Punkte, in Pointlist ( von size-1 zu 1) , 0 wird alleine behandelt siehe unten (Zeile 226)
+				private void positionAendern()
+				{
+					for (int i=pointList.size()-1;i>0;i--)
+					{
+						pointList.get(i).SetXPosition(pointList.get(i-1).getXPosition());
+						pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
+					}
+					geschwindigkeit();
+				}
+				
+		// die standard Richtung der Bewegung im Spiel ist von links nach rechts
+		private void automatischeBewegung()
 		{
-			//speichern der letzen Position von letzem Punkt ,bevor die Schlange sich bewegt
-			XPositionVonletzenStück=pointList.get(pointList.size()-1).getXPosition();
-			YPositionVonletzenStück=pointList.get(pointList.size()-1).getYPosition();
+			// bevor die Schlange sich bewegt, wird hier die letzte Position vom letzem Punkt gespeichert
+			XPositionVonletzenStueck=pointList.get(pointList.size()-1).getXPosition();
+			YPositionVonletzenStueck=pointList.get(pointList.size()-1).getYPosition();
 			
 			Farbenreset();
 			positionAendern();
-			//Handlugs von 0 Position
+			
+			//Handlug aus der "Position 0"
 			if(right)
 			{
 				pointList.get(0).SetXPosition(pointList.get(0).getXPosition()+1);
@@ -243,27 +249,18 @@ public class Controller{
 			}
 		}
 		
-		//änderen der Position der Punkte in Pointlist ( von size-1 zu 1) , 0 wird alleine behandelt
-		private void positionAendern()
-		{
-			for (int i=pointList.size()-1;i>0;i--)
-			{
-				pointList.get(i).SetXPosition(pointList.get(i-1).getXPosition());
-				pointList.get(i).SetYPosition(pointList.get(i-1).getYPosition());
-			}
-			geschwindigkeit();
-		}
 
-		//die Geschwindigkeit wird erhöht wenn der level geschafft ist (30 Millisekunden) jedes mal 
+		// sobald das level geschafft ist, wird die Geschwindigkeit erhoeht (jedes mal um 60 Millisekunden)  
 		private void geschwindigkeit()
 		{
-			controller.sleep(500-(levelNumber*30));
+			controller.sleep(500-(levelNumber*60));
 		}
 		
-		//Bord muss Weiß umgeben 
+		//die abgrenzung des Spielfeldes wird eingezeichnet (in weiss) 
 		private void BordZeichnen()
 		{
-			for( int i = 0; i < 20; i++) {
+			for( int i = 0; i < 20; i++) 
+			{
 				controller.setColor(i, 0, 127, 127, 127);
 				controller.setColor(i, 19, 127, 127, 127);
 				controller.updateBoard();
@@ -276,14 +273,14 @@ public class Controller{
 			}
 		}
 		
-		//sobald die Schlange etwas isst ,muss sie länger sein werden
-		private void Schlangeverlängern()
+		//sobald die Schlange etwas isst ,wird sie laenger
+		private void Schlangeverlaengern()
 		{
-			//füg der neue Punkt an die gleiche Position von dem letzen Punkt hinzu ,denn der letzen alten Punkt ist schon bewegt werden
-			// {120 -(this.schlangeGrosse*2) beschreibt wie Gross muss jede neue Stück sein muss : je mehr sie weit von Kopf ist,desto kleiner Kreisradius hat
-			pointList.add(new Points(XPositionVonletzenStück,YPositionVonletzenStück,new int[] {120-(this.schlangeGrosse*2),0,0}));
-			controller.addColor(XPositionVonletzenStück,YPositionVonletzenStück,pointList.get(pointList.size()-1).getColor());
-			schlangeGrosse++; //wenn 12 -> level geschafft
+			//Fuegt einen neue Punkt an das Ende der Schlange hinzu. 
+			// {120 -(this.schlangeGrosse*2) beschreibt wie Gross jedes neue Stueck sein muss : je weiter das Stueck (Point) vom Kopf entfernt ist, desto kleiner ist der Kreisradius
+			pointList.add(new Points(XPositionVonletzenStueck,YPositionVonletzenStueck,new int[] {120-(this.schlangeGrosse*2),0,0}));
+			controller.addColor(XPositionVonletzenStueck,YPositionVonletzenStueck,pointList.get(pointList.size()-1).getColor());
+			schlangeGrosse++; //wenn 30 -> level geschafft
 		}
 		
 
@@ -296,7 +293,7 @@ public class Controller{
 				if (event.getID() == java.awt.event.KeyEvent.KEY_PRESSED){
 					switch (event.getKeyCode()){
 					case java.awt.event.KeyEvent.VK_UP:
-						if(down) //Darf keine Gegenrichtung ausgeführt werden
+						if(down) //beim druecken der Entgegengesetze Taste wird der Befehl nicht funktionieren
 							break;
 						left = right = down =false;
 						up =true;
@@ -323,7 +320,7 @@ public class Controller{
 					}
 				}
 			}
-			buffer.clear(); // Lösch alle (Buffered) Anweisungen  : Im Fall ein Key mehrmals gedrückt ist 
+			buffer.clear(); // Loescht alle (Buffered) Anweisungen  : Im Fall dass verschiedene Tasten zu schnell nacheinander gedrueckt werden, wird der Befehl nicht ausgefuert
 		}
 		
 }
